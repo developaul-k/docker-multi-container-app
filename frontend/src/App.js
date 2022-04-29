@@ -8,6 +8,7 @@ function App() {
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
+    console.log('mounted');
     (async () => {
       try {
         const { data } = await axios.get('/api/values');
