@@ -14,7 +14,8 @@ after_success:
   - docker build -t developaul/docker-backend ./backend
   - docker build -t developaul/docker-nginx ./nginx
   # 도커 허브에 로그인
-  - echo $DOCKER_HUB_PASSWORD | docker login -u $DOCKER_HUB_ID --password-stdin
+  ## 환경변수에 특수문자 들어가 있을 경우 \로 이스케이프 해야함.
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID --password-stdin"
   # 빌드된 이미지들을 도커 허브에 푸시
   - docker push developaul/docker-frontend
   - docker push developaul/docker-backend
