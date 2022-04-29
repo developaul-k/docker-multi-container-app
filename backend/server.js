@@ -1,9 +1,10 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const db = require('./db');
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json());
 
 // 운영 환경에서 테이블 생성
 db.pool.query(
@@ -27,10 +28,10 @@ app.get('/api/values', function (req, res, next) {
 });
 
 app.post('/api/values', function (req, res, next) {
-  console.log('req.body.value: ', req.body.value);
   db.pool.query(
     `INSERT INTO lists (value) VALUES("${req.body.value}")`,
     (err, results, fields) => {
+      console.log('err?', err);
       if (err) return res.status(500).send(err);
       res.json({ success: true, value: req.body.value });
     }

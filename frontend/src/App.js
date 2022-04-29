@@ -8,11 +8,9 @@ function App() {
   const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    console.log('mounted');
     (async () => {
       try {
         const { data } = await axios.get('/api/values');
-        console.log('data: ', data);
         setLists(data);
       } catch (err) {
         console.log('failed to fetch');
@@ -27,7 +25,7 @@ function App() {
       e.preventDefault();
 
       const {data} = await axios.post('/api/values', { value });
-      if (data.success) {
+      if (data?.success) {
         setLists((prevState) => [...prevState, data]);
         setValue('');
         return;
