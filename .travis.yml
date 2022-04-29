@@ -20,3 +20,14 @@ after_success:
   - docker push developaul/docker-frontend
   - docker push developaul/docker-backend
   - docker push developaul/docker-nginx
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-northeast-2"
+  app: "docker-multi-app"
+  env: "Dockermultiapp-env"
+  bucket_name: elasticbeanstalk-ap-northeast-2-718147777954
+  bucket_path: "docker-multi-app"
+  on:
+    branch: main
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
