@@ -1,0 +1,21 @@
+language: generic
+sudo: required
+# Travis CI에게 도커 환경에서 테스트, 빌드, 배포를 진행할 것임을 알려줌으로써 자동으로 도커 환경을 구성하도록 함.
+services:
+  - docker
+before_install:
+  #docker build -t <도커 아이디>/<프로젝트 이름> -f <도커 파일 경로> 빌드할 파일이 있는 경로
+  - docker build -t developaul/react-test-app -f ./frontend/Dockerfile.dev ./frontend
+# 실행할 스크립트(테스트 실행)
+script:
+  - docker run -e CI=true developaul/react-test-app npm test
+after_success:
+  - docker build -t developaul/docker-frontend ./frontend
+  - docker build -t developaul/docker-backend ./backend
+  - docker build -t developaul/docker-nginx ./nginx
+  # 도커 허브에 로그인
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
+  # 빌드된 이미지들을 도커 허브에 푸시
+  - docker push developaul/docker-frontend
+  - docker push developaul/docker-backend
+  - docker push developaul/docker-nginx

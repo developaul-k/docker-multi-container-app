@@ -5,6 +5,17 @@ const app = express();
 
 app.use(express.json());
 
+// 운영 환경에서 테이블 생성
+db.pool.query(
+  `
+  CREATE TABLE lists (
+    id MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    value TEXT
+  )
+  `,
+  (err, results, fileds) => console.log('results', results)
+);
+
 app.listen(5000, () => console.log('Application started on port:5000'));
 
 app.get('/api/values', function (req, res, next) {
